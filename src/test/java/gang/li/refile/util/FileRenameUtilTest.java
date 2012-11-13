@@ -9,10 +9,10 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 public class FileRenameUtilTest extends TestCase {
-    
-    private static final String filePath = System.getProperty("java.io.tmpdir") + "renamefiletest";
+
+    private static final String filePath = System.getProperty("java.io.tmpdir") + "/renamefiletest";
     private static final String template = "<1-4>???";
-    
+
     private File clearFilePath() {
         File fPath = new File(filePath);
         if (fPath.exists()) {
@@ -25,7 +25,7 @@ public class FileRenameUtilTest extends TestCase {
     protected void setUp() throws Exception {
         clearFilePath().mkdir();
     }
-    
+
     public void testChangeNameInOnePathFromTemplate() {
         try {
             FileRenameUtil.changeNameInOnePathFromTemplate(filePath, template);
@@ -36,9 +36,9 @@ public class FileRenameUtilTest extends TestCase {
         } catch (RuntimeException e) {
             fail(e.getClass() + ":" + e.getMessage());
         }
-        
+
     }
-    
+
     public void testGetFileNameObjsInOnePath() {
         try {
             FileRenameUtil.getFileNameObjsInOnePath(filePath);
@@ -46,7 +46,7 @@ public class FileRenameUtilTest extends TestCase {
             fail(e.getClass() + ":" + e.getMessage());
         }
     }
-    
+
     @Override
     protected void tearDown() throws Exception {
         clearFilePath();
