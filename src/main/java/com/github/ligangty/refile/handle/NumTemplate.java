@@ -4,8 +4,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.ligangty.refile.util.FileRenameUtil;
-
 /**
  * This Template is used to change the file name string using the number
  * template. when the template string contains the "?", it will replaced by the
@@ -20,7 +18,7 @@ import com.github.ligangty.refile.util.FileRenameUtil;
  */
 public class NumTemplate extends AbstractTemplate {
 
-    private static final Logger log = Logger.getLogger(FileRenameUtil.class.getName());
+    private static final Logger log = Logger.getLogger(NumTemplate.class.getName());
     /**
      * number which will replace the "?" in the template, may be added with
      * zeroes

@@ -21,7 +21,7 @@ import com.github.ligangty.refile.util.FileUtil;
  */
 public class RangeTemplate extends AbstractTemplate {
 
-    private static final Logger log = Logger.getLogger(FileRenameUtil.class
+    private static final Logger log = Logger.getLogger(RangeTemplate.class
             .getName());
     /**
      * regexp pattern for this match
