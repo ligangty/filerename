@@ -4,19 +4,18 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.ligangty.refile.util.FileRenameUtil;
 import com.github.ligangty.refile.util.FileUtil;
 
 /**
  * This Template is used to change the file name string using the asterisk. It
  * will return the original file name.
  *
- * @author Jacky Li
+ * @author ligangty@github.com
  * @date Apr 6, 2009
  */
 public class OriginalFileNameTemplate extends AbstractTemplate {
 
-    private static final Logger log = Logger.getLogger(FileRenameUtil.class
+    private static final Logger log = Logger.getLogger(OriginalFileNameTemplate.class
             .getName());
     /**
      * regexp pattern for this match

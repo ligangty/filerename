@@ -53,7 +53,7 @@ import com.github.ligangty.refile.util.UIConstants;
  * by alphabeta replacing the ? not implemented. 3.Upper Lower transformation
  * was not implemented
  *
- * @author Jacky Li
+ * @author ligangty@github.com
  * @date Apri 14, 2009
  */
 public class RenameView {

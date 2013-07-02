@@ -16,7 +16,7 @@ import com.github.ligangty.refile.util.FileUtil;
  * file name will be "abcdst".
  *
  *
- * @author Jacky Li
+ * @author ligangty@github.com
  * @date Apr 6, 2009
  */
 public class RangeTemplate extends AbstractTemplate {

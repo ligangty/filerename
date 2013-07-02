@@ -4,7 +4,7 @@ package com.github.ligangty.refile.util;
  * This util class is used to do some utility function to get file associated
  * properties, like get postfix, remove postfix and so on.
  *
- * @author runanli
+ * @author ligangty@github.com
  * @date Apr 6, 2009
  */
 public class FileUtil {

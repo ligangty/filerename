@@ -11,7 +11,7 @@ import com.github.ligangty.refile.util.FileUtil;
  * Because this class's objects may be used in the Vector which will be used
  * sortedly, so it implements the java.lang.Comparable.
  *
- * @author Jacky Li
+ * @author ligangty@github.com
  * @date Apr 6, 2009
  */
 public class FileNameObj implements Comparable {

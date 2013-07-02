@@ -13,7 +13,7 @@ import com.github.ligangty.refile.handle.TemplateException;
 
 /**
  *
- * @author runanli
+ * @author ligangty@github.com
  * @date April 12, 2009
  */
 public class FileRenameUtil {

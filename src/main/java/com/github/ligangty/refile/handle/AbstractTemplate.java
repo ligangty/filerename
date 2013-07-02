@@ -4,7 +4,7 @@ package com.github.ligangty.refile.handle;
  * AbstractTemplate is an abstract template which implements Template interface
  * and supply default implementation of the method of the interface.
  *
- * @author Jacky Li
+ * @author ligangty@github.com
  * @date Apr 12, 2009
  */
 public class AbstractTemplate implements Template {

@@ -15,7 +15,7 @@ import com.github.ligangty.refile.util.FileRenameUtil;
  * Note: when the template string contains "<X-Y>", please use the RangeTemplate
  * first to replace it first.
  *
- * @author Jacky Li
+ * @author ligangty@github.com
  * @date Apr 6, 2009
  */
 public class NumTemplate extends AbstractTemplate {
