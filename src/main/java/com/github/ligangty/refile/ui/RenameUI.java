@@ -83,12 +83,12 @@ public class RenameUI {
                 fileDialog.setMultiSelectionEnabled(true);
                 // fileDialog.setVisible(true);
                 int result = fileDialog.showOpenDialog(mainBoard);
-                String msg = "";
+                String msg;
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File[] files = fileDialog.getSelectedFiles();
-                    for (int i = 0; i < files.length; i++) {
-                        System.out.println(files[i].getName());
-                        System.out.println(files[i].getAbsolutePath());
+                    for (File file : files) {
+                        System.out.println(file.getName());
+                        System.out.println(file.getAbsolutePath());
                     }
                     String fname = fileDialog.getName(fileDialog
                             .getSelectedFile());

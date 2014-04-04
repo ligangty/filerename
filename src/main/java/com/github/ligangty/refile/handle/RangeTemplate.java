@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.ligangty.refile.util.FileRenameUtil;
 import com.github.ligangty.refile.util.FileUtil;
 
 /**
@@ -54,7 +53,7 @@ public class RangeTemplate extends AbstractTemplate {
 
     protected String getRealTxtWithTemplateFromFileName(String fileName,
             String subTemp) throws TemplateException {
-        if (subTemp.indexOf("<") < 0) {
+        if (!subTemp.contains("<")) {
             throw new TemplateException("this template do not conain a range template string.", this);
         }
         Pattern p = Pattern.compile("(\\d+)");

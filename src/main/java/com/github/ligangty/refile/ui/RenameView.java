@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -45,6 +44,9 @@ import com.github.ligangty.refile.handle.TemplateException;
 import com.github.ligangty.refile.util.FileRenameUtil;
 import com.github.ligangty.refile.util.LocaleHelper;
 import com.github.ligangty.refile.util.UIConstants;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * main GUI class for this project
@@ -121,7 +123,6 @@ public class RenameView {
         // beginButton.setBorderPainted(false);
         // addButton.setBorderPainted(false);
         // removeButton.setBorderPainted(false);
-
         initMenu();
 
         final JPanel upperPanel = new JPanel();
@@ -214,7 +215,7 @@ public class RenameView {
                     String template = templateList.getSelectedItem().toString();
                     String startIndexStr = startPosSpn.getModel().getValue().toString();
                     int startIndex = Integer.parseInt(startIndexStr);
-                    Vector fileNames = ((FileChooseTableModel) reviewTable.getModel()).getFileNameSet();
+                    List<FileNameObj> fileNames = ((FileChooseTableModel) reviewTable.getModel()).getFileNameSet();
                     if (useNumberRadioButton.isSelected()) {
                         try {
                             FileRenameUtil.renameFilesUsingNum(fileNames, template, startIndex, false);
@@ -235,7 +236,7 @@ public class RenameView {
                     String template = templateList.getSelectedItem().toString();
                     String startIndexStr = startPosSpn.getModel().getValue().toString();
                     int startIndex = Integer.parseInt(startIndexStr);
-                    Vector fileNames = ((FileChooseTableModel) reviewTable.getModel()).getFileNameSet();
+                    List<FileNameObj> fileNames = ((FileChooseTableModel) reviewTable.getModel()).getFileNameSet();
                     if (useNumberRadioButton.isSelected()) {
                         try {
                             FileRenameUtil.renameFilesUsingNum(fileNames, template, startIndex, true);
@@ -300,7 +301,7 @@ public class RenameView {
         mainFrame.setVisible(true);
     }
 
-    protected void initMenu() {
+    protected final void initMenu() {
         mainFrame.setJMenuBar(menuBar);
 
         menuBar.add(fileMenu);
@@ -342,7 +343,7 @@ public class RenameView {
         reviewTable.getTableHeader().setReorderingAllowed(false);
     }
 
-    protected void setTextByLocale(Locale locale) {
+    final void setTextByLocale(Locale locale) {
         changeLocale(locale);
         // remove all template item to re-add other locale-spec items
         // if (templateList.getModel().getSize() > 0) {
@@ -376,7 +377,6 @@ public class RenameView {
          eng.setText(localHelper.getLocalString(UIConstants.MENU_LANGUAGE_ENG));
          chn.setText(localHelper.getLocalString(UIConstants.MENU_LANGUAGE_CHN));
          */
-
         textArea.replaceRange(localeHelper.getLocaleString(UIConstants.TEMPLATE_README), 0, textArea.getDocument().getLength());
 
         mainFrame.pack();
@@ -411,14 +411,14 @@ public class RenameView {
 
         public void actionPerformed(ActionEvent e) {
             FileChooseTableModel model = (FileChooseTableModel) reviewTable.getModel();
-            Vector fileNames = model.getFileNameSet();
+            List<FileNameObj> fileNames = model.getFileNameSet();
             JFileChooser fileDialog = new JFileChooser();
             fileDialog.setMultiSelectionEnabled(true);
             int result = fileDialog.showOpenDialog(mainFrame);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File[] files = fileDialog.getSelectedFiles();
-                for (int i = 0; i < files.length; i++) {
-                    FileNameObj fNameObj = new FileNameObj(files[i].getAbsolutePath());
+                for (File file : files) {
+                    FileNameObj fNameObj = new FileNameObj(file.getAbsolutePath());
                     boolean isAdded = false;
                     Iterator iter = fileNames.iterator();
                     while (iter.hasNext()) {
@@ -440,9 +440,9 @@ public class RenameView {
 
         public void actionPerformed(ActionEvent e) {
             FileChooseTableModel model = (FileChooseTableModel) reviewTable.getModel();
-            Vector fileNames = model.getFileNameSet();
+            List<FileNameObj> fileNames = model.getFileNameSet();
             int[] columnsInds = reviewTable.getSelectedRows();
-            Vector selectedFileNames = new Vector();
+            List<FileNameObj> selectedFileNames = new ArrayList<FileNameObj>();
             for (int i = 0; i < columnsInds.length; i++) {
                 if (columnsInds[i] < fileNames.size()) {
                     selectedFileNames.add(fileNames.get(columnsInds[i]));
@@ -455,28 +455,28 @@ public class RenameView {
 
     class FileChooseTableModel extends AbstractTableModel {
 
-        private Vector fileNames;
+        private List<FileNameObj> fileNames;
         private boolean isNewFileInPath;
-        private final int INIT_ROW_CNT;
-        private String[] colHeaderNames = {
+        private final int INIT_ROW_CNT = (int) Math.floor(TABLE_SCROLL_VIEW_PREFER_HEIGHT / reviewTable.getRowHeight());
+        ;
+        private final String[] colHeaderNames = {
             localeHelper.getLocaleString(UIConstants.TABLE_HEAD_COL_FIR),
             localeHelper.getLocaleString(UIConstants.TABLE_HEAD_COL_SEC),
             localeHelper.getLocaleString(UIConstants.TABLE_HEAD_COL_THI)};
 
         FileChooseTableModel() {
-            this(new Vector());
+            this(new ArrayList<FileNameObj>());
         }
 
-        FileChooseTableModel(Vector fileNames) {
-            setFileNameSet(fileNames);
-            INIT_ROW_CNT = (int) Math.floor(TABLE_SCROLL_VIEW_PREFER_HEIGHT / reviewTable.getRowHeight());
-        }
-
-        public void setFileNameSet(Vector fileNames) {
+        FileChooseTableModel(List<FileNameObj> fileNames) {
             this.fileNames = fileNames;
         }
 
-        public Vector getFileNameSet() {
+        public void setFileNameSet(List<FileNameObj> fileNames) {
+            this.fileNames = fileNames;
+        }
+
+        public List<FileNameObj> getFileNameSet() {
             return fileNames;
         }
 
@@ -488,19 +488,23 @@ public class RenameView {
             this.isNewFileInPath = isNewFileInPath;
         }
 
+        @Override
         public int getColumnCount() {
             return colHeaderNames.length;
         }
 
+        @Override
         public int getRowCount() {
             int realCount = fileNames.size();
             return realCount > INIT_ROW_CNT ? realCount : INIT_ROW_CNT;
         }
 
+        @Override
         public String getColumnName(int column) {
             return colHeaderNames[column];
         }
 
+        @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             if (rowIndex < fileNames.size()) {
                 FileNameObj fileName = (FileNameObj) fileNames.get(rowIndex);
@@ -528,7 +532,7 @@ public class RenameView {
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            new RenameView();
+            RenameView view = new RenameView();
         } catch (Exception e) {
             e.printStackTrace();
         }

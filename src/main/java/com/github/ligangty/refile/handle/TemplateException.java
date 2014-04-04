@@ -3,7 +3,7 @@ package com.github.ligangty.refile.handle;
 public class TemplateException extends Exception {
 
     static final long serialVersionUID = -3387584195684229948L;
-    private Template sourceTemplate;
+    private final Template sourceTemplate;
 
     public TemplateException(Template sourceTemplate) {
         this.sourceTemplate = sourceTemplate;

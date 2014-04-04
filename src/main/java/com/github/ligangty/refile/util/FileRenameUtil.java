@@ -3,13 +3,14 @@ package com.github.ligangty.refile.util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
-import java.util.Vector;
 
 import com.github.ligangty.refile.handle.FileNameObj;
 import com.github.ligangty.refile.handle.NumTemplate;
 import com.github.ligangty.refile.handle.OriginalFileNameTemplate;
 import com.github.ligangty.refile.handle.RangeTemplate;
 import com.github.ligangty.refile.handle.TemplateException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -24,14 +25,14 @@ public class FileRenameUtil {
 
     public static void changeNameInOnePathFromTemplate(String filePath,
             String template) throws FileNotFoundException, TemplateException {
-        Vector fileList = getFileNameObjsInOnePath(filePath);
+        List fileList = getFileNameObjsInOnePath(filePath);
         renameFilesUsingNum(fileList, template, 0, true);
     }
 
-    public static Vector getFileNameObjsInOnePath(String filePath)
+    public static List getFileNameObjsInOnePath(String filePath)
             throws RuntimeException {
         File file = new File(filePath);
-        Vector fileList = new Vector();
+        List<FileNameObj> fileList = new ArrayList<FileNameObj>();
         if (!file.isDirectory()) {
             throw new RuntimeException(filePath + "is not a directory!");
         }
@@ -47,13 +48,14 @@ public class FileRenameUtil {
      *
      * @param fileNames - a Vector contains the FileNameObjs
      * @param template - template String for renaming
+     * @param startIndex - 
      * @param isRenamable - true if you want to really rename the file, false if
      * you just want to get the renamed file name
      * @throws com.github.ligangty.refile.handle.TemplateException - when template is not
      * @throws java.io.FileNotFoundException
      */
-    public static void renameFilesUsingNum(Vector fileNames, String template, int startIndex, boolean isRenamable) throws TemplateException, FileNotFoundException {
-        FileNameObj fnObj = null;
+    public static void renameFilesUsingNum(List<FileNameObj> fileNames, String template, int startIndex, boolean isRenamable) throws TemplateException, FileNotFoundException {
+        FileNameObj fnObj;
         int fileIndex = startIndex;
         for (Iterator iter = fileNames.iterator(); iter.hasNext();) {
             fnObj = (FileNameObj) iter.next();

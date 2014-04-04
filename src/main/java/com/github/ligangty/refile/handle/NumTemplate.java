@@ -40,12 +40,11 @@ public class NumTemplate extends AbstractTemplate {
      * continuous string like "????", it will be changed to "0001" when the
      * "changeTo" is one.
      *
-     * @param fileName - file name which does not include the file path
      * @param templateStr - the template string used to change this file name
      * @param changeTo - used to replace the file name which match the "?" in
      * template string
      * @return changed file name
-     * @throws my.li.runan.refile.handle.TemplateException
+     * @throws TemplateException
      */
     public String getFileNameFromTemplate(String templateStr, int changeTo) throws TemplateException {
         setChangeTo(changeTo);
@@ -54,7 +53,7 @@ public class NumTemplate extends AbstractTemplate {
         StringBuffer sb = new StringBuffer(256);
         while (m.find()) {
             String subTemplate = m.group(1);
-            if (subTemplate.indexOf("?") < 0) {
+            if (!subTemplate.contains("?")) {
                 throw new TemplateException("this template does not contain \"?\"", this);
             }
             String replacePart = addZerosByNumLimit(subTemplate.length());
@@ -73,13 +72,13 @@ public class NumTemplate extends AbstractTemplate {
      * @param numLimit - limit the numbers of continuous number characters. e.g:
      * when "????", this is 4;
      * @return number characters which will replace the match part
-     * @throws my.li.runan.refile.handle.TemplateException
+     * @throws TemplateException
      */
     protected String addZerosByNumLimit(int numLimit) throws TemplateException {
         if (numLimit > MAX_NUM_LIMIT_CHARS) {
             throw new TemplateException("the num of ? in number temlate was more than the limit", this);
         }
-        StringBuffer sb = new StringBuffer(numLimit + 1);
+        StringBuilder sb = new StringBuilder(numLimit + 1);
         String changeToStr = "" + changeTo;
         if (changeToStr.length() < numLimit) {
             for (int i = 0; i < (numLimit - changeToStr.length()); i++) {

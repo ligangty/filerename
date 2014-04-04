@@ -14,10 +14,12 @@ public class AbstractTemplate implements Template {
      */
     private String errorMessage;
 
+    @Override
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    @Override
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }

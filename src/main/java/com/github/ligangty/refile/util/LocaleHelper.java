@@ -14,8 +14,6 @@ public class LocaleHelper {
     /**
      * Constructor for instantiating a LocalizationHelper
      *
-     * @param resourceBundleBaseName
-     * @param request
      */
     protected LocaleHelper() {
         super();
@@ -47,7 +45,7 @@ public class LocaleHelper {
      * @param resourceKey
      * @return
      */
-    private final Object getObject(String resourceKey) {
+    private Object getObject(String resourceKey) {
         return this.resourceBundleForCurrentUserLocale.getObject(resourceKey);
     }
 
@@ -73,7 +71,7 @@ public class LocaleHelper {
     public final String getContentStringWithParameters(String contentKey,
             String[] contentStringParameters) {
         return MessageFormat.format(this.getLocaleString(contentKey),
-                contentStringParameters);
+                new Object[]{contentStringParameters});
     }
 
     /**

@@ -72,7 +72,7 @@ public class FileNameObj implements Comparable {
         return newFileName;
     }
 
-    public void setNewFileName(String newFileName) {
+    public final void setNewFileName(String newFileName) {
         this.newFileName = newFileName;
     }
 
@@ -80,7 +80,7 @@ public class FileNameObj implements Comparable {
         return oldPostFix;
     }
 
-    public void setOldPostFix(String postFix) {
+    public final void setOldPostFix(String postFix) {
         this.oldPostFix = postFix;
     }
 
@@ -88,20 +88,20 @@ public class FileNameObj implements Comparable {
         return newPostFix;
     }
 
-    public void setNewPostFix(String newPostFix) {
+    public final void setNewPostFix(String newPostFix) {
         this.newPostFix = newPostFix;
     }
 
-    public String getFilePathFromFullFileName(String fullFileName) {
-        if (fullFileName.indexOf("\\") != -1) {
+    public final String getFilePathFromFullFileName(String fullFileName) {
+        if (!fullFileName.contains("\\")) {
             fullFileName = fullFileName.replaceAll("\\\\", "/");
         }
         setFilePath(fullFileName.substring(0, fullFileName.lastIndexOf("/")));
         return filePath;
     }
 
-    public String getOldFileNameFromFullFileName(String fullFileName) {
-        if (fullFileName.indexOf("\\") != -1) {
+    public final String getOldFileNameFromFullFileName(String fullFileName) {
+        if (!fullFileName.contains("\\")) {
             fullFileName = fullFileName.replaceAll("\\\\", "/");
         }
         setOldFileName(FileUtil.getFileNameWithoutPostFix(fullFileName.substring(fullFileName.lastIndexOf("/") + 1)));
@@ -128,9 +128,10 @@ public class FileNameObj implements Comparable {
      * equal, the two fileNameObjs are equal; else compared by the filePath
      * string or by the oldFileName string(if the filePath also equals)
      *
-     * @param obj
+     * @param fileNameObj
      * @return
      */
+    @Override
     public int compareTo(Object fileNameObj) {
         FileNameObj fNameObj = (FileNameObj) fileNameObj;
         if (this.getOldFileName().equals(fNameObj.getOldFileName()) && this.getFilePath().equals(fNameObj.getFilePath())) {
@@ -146,9 +147,10 @@ public class FileNameObj implements Comparable {
      * When oldFileName and filePath are both equal, the two fileNameObjs are
      * equal
      *
-     * @param o
+     * @param fileNameObj
      * @return
      */
+    @Override
     public boolean equals(Object fileNameObj) {
         if (!(fileNameObj instanceof FileNameObj)) {
             return false;
