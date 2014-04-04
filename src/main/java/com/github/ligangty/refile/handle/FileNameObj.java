@@ -93,7 +93,7 @@ public class FileNameObj implements Comparable {
     }
 
     public final String getFilePathFromFullFileName(String fullFileName) {
-        if (!fullFileName.contains("\\")) {
+        if (fullFileName.contains("\\")) {
             fullFileName = fullFileName.replaceAll("\\\\", "/");
         }
         setFilePath(fullFileName.substring(0, fullFileName.lastIndexOf("/")));
@@ -101,7 +101,7 @@ public class FileNameObj implements Comparable {
     }
 
     public final String getOldFileNameFromFullFileName(String fullFileName) {
-        if (!fullFileName.contains("\\")) {
+        if (fullFileName.contains("\\")) {
             fullFileName = fullFileName.replaceAll("\\\\", "/");
         }
         setOldFileName(FileUtil.getFileNameWithoutPostFix(fullFileName.substring(fullFileName.lastIndexOf("/") + 1)));

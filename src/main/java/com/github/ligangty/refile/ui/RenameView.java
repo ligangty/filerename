@@ -46,6 +46,7 @@ import com.github.ligangty.refile.util.UIConstants;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * main GUI class for this project
@@ -532,8 +533,14 @@ public class RenameView {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             RenameView view = new RenameView();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException classNotFoundException) {
+            classNotFoundException.printStackTrace();
+        } catch (InstantiationException instantiationException) {
+            instantiationException.printStackTrace();
+        } catch (IllegalAccessException illegalAccessException) {
+            illegalAccessException.printStackTrace();
+        } catch (UnsupportedLookAndFeelException unsupportedLookAndFeelException) {
+            unsupportedLookAndFeelException.printStackTrace();
         }
     }
 }
