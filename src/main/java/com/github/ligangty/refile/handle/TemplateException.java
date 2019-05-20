@@ -10,7 +10,11 @@ public class TemplateException extends Exception {
     }
 
     TemplateException(String errorMessage, Template sourceTemplate) {
-        super(errorMessage);
+        this(errorMessage, sourceTemplate, null);
+    }
+
+    TemplateException(String errorMessage, Template sourceTemplate, Throwable cause){
+        super(errorMessage, cause);
         this.sourceTemplate = sourceTemplate;
         this.sourceTemplate.setErrorMessage(errorMessage);
     }

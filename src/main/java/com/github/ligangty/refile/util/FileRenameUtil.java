@@ -61,7 +61,7 @@ public class FileRenameUtil {
         for (FileNameObj fileName : fileNames) {
             fnObj = fileName;
             fnObj.setNewFileName(ORI_FILE_TEMPLATE.getFileNameFromTemplate(fnObj.getOldFileName(), template));
-            fnObj.setNewFileName(RANGE_TEMPLATE.getFileNameFromTemplate(fnObj.getOldFileName(), fnObj.getNewFileName()));
+            fnObj.setNewFileName(RANGE_TEMPLATE.getFileNameFromTemplate(fnObj.getFullOldFileName(), fnObj.getNewFileName()));
             fnObj.setNewFileName(NUM_TEMPLATE.getFileNameFromTemplate(fnObj.getNewFileName(), fileIndex));
             if (isRenamable) {
                 fnObj.renameFile();

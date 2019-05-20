@@ -16,5 +16,11 @@ public class OriginalFileNameTemplateTest {
         String templateStr = "*<1-5>*??";
         String result = template.getFileNameFromTemplate(fileName, templateStr);
         Assert.assertEquals("fileNameForTest<1-5>fileNameForTest??", result);
+
+        fileName = "[Maho.sub][140228][这是一个测试啊这是一个测试啊这是一个测试啊这是一个测试啊]这是一个测试啊这是一个测试啊.txt";
+        templateStr = "*";
+        result = template.getFileNameFromTemplate(fileName, templateStr);
+        Assert.assertEquals("[Maho.sub][140228][这是一个测试啊这是一个测试啊这是一个测试啊这是一个测试啊]这是一个测试啊这是一个测试啊", result);
+
     }
 }

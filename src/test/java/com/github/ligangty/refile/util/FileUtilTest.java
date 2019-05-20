@@ -16,6 +16,7 @@ public class FileUtilTest {
         assertEquals("", FileUtil.getPostFixFromFileName(fileName));
     }
 
+    @Test
     public void testGetFileNameWithoutPostFix() {
         String fileName = "MyFile.txt";
         assertEquals("MyFile", FileUtil.getFileNameWithoutPostFix(fileName));
@@ -23,5 +24,8 @@ public class FileUtilTest {
         assertEquals("MyFile", FileUtil.getFileNameWithoutPostFix(fileName));
         fileName = "MyFile.";
         assertEquals("MyFile", FileUtil.getFileNameWithoutPostFix(fileName));
+        fileName = "[Maho][xyzabc][这是一个测试]这是一个测试.txt";
+        assertEquals("[Maho][xyzabc][这是一个测试]这是一个测试", FileUtil.getFileNameWithoutPostFix(fileName));
     }
+
 }

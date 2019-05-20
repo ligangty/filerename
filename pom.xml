@@ -26,7 +26,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.github.liangty.refile.ui.RenameView</mainClass>
+                            <mainClass>com.github.ligangty.refile.ui.RenameView</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
