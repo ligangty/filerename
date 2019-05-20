@@ -1,6 +1,5 @@
 package com.github.ligangty.refile.handle;
 
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,21 +19,11 @@ import com.github.ligangty.refile.util.FileUtil;
  */
 public class RangeTemplate extends AbstractTemplate {
 
-    private static final Logger log = Logger.getLogger(RangeTemplate.class
-            .getName());
     /**
      * regexp pattern for this match
      */
     private static final String PATTERN = "(<\\d+-{0,1}\\d*>)";
 
-    /**
-     *
-     *
-     * @param fileName
-     * @param templateStr
-     * @return
-     * @throws com.github.ligangty.refile.handle.TemplateException
-     */
     public String getFileNameFromTemplate(String fileName, String templateStr)
             throws TemplateException {
         String fileNameWithoutPostFix = FileUtil
@@ -51,7 +40,7 @@ public class RangeTemplate extends AbstractTemplate {
         return sb.toString();
     }
 
-    protected String getRealTxtWithTemplateFromFileName(String fileName,
+    String getRealTxtWithTemplateFromFileName(String fileName,
             String subTemp) throws TemplateException {
         if (!subTemp.contains("<")) {
             throw new TemplateException("this template do not conain a range template string.", this);
@@ -67,7 +56,7 @@ public class RangeTemplate extends AbstractTemplate {
         if (range[1] == 0) {
             return fileName.charAt(range[0] - 1) + "";
         } else if (range[1] > fileName.length()) {
-            return fileName.substring(range[0] - 1, fileName.length());
+            return fileName.substring(range[0] - 1);
         } else {
             return fileName.substring(range[0] - 1, range[1]);
         }

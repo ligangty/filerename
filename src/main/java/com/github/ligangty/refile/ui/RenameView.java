@@ -5,13 +5,14 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
-
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -33,6 +34,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.table.AbstractTableModel;
@@ -43,10 +45,6 @@ import com.github.ligangty.refile.handle.TemplateException;
 import com.github.ligangty.refile.util.FileRenameUtil;
 import com.github.ligangty.refile.util.LocaleHelper;
 import com.github.ligangty.refile.util.UIConstants;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * main GUI class for this project
@@ -146,21 +144,18 @@ public class RenameView {
                 GridBagConstraints.BOTH);
 
         useTemplateCheckBox.setSelected(true);
-        useTemplateCheckBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                for (Enumeration enm = buttonGroup.getElements(); enm.hasMoreElements();) {
-                    JComponent subComp = (JComponent) enm.nextElement();
-                    subComp.setEnabled(useTemplateCheckBox.isSelected());
-                }
-                startPosSpn.setEnabled(useTemplateCheckBox.isSelected());
-                templateList.setEnabled(useTemplateCheckBox.isSelected());
-                suffixList.setEnabled(useTemplateCheckBox.isSelected() ? changeSuffixCheck.isSelected()
-                        : false);
-                changeSuffixCheck.setEnabled(useTemplateCheckBox.isSelected());
-                startPositionLabel.setEnabled(useTemplateCheckBox.isSelected());
-                templateLabel.setEnabled(useTemplateCheckBox.isSelected());
-
+        useTemplateCheckBox.addActionListener(e -> {
+            for (Enumeration enm = buttonGroup.getElements(); enm.hasMoreElements();) {
+                JComponent subComp = (JComponent) enm.nextElement();
+                subComp.setEnabled(useTemplateCheckBox.isSelected());
             }
+            startPosSpn.setEnabled(useTemplateCheckBox.isSelected());
+            templateList.setEnabled(useTemplateCheckBox.isSelected());
+            suffixList.setEnabled(useTemplateCheckBox.isSelected() && changeSuffixCheck.isSelected());
+            changeSuffixCheck.setEnabled(useTemplateCheckBox.isSelected());
+            startPositionLabel.setEnabled(useTemplateCheckBox.isSelected());
+            templateLabel.setEnabled(useTemplateCheckBox.isSelected());
+
         });
         optionsPanel.addComponent(useTemplateCheckBox, 0, 0, 2, 1,
                 GridBagConstraints.WEST, 0, 0, 0, 0, null,
@@ -203,53 +198,41 @@ public class RenameView {
         optionsPanel.addComponent(suffixList, 5, 6, 1, 1,
                 GridBagConstraints.CENTER, 0, 0, 0, -5, new Insets(3, 0, 0, 0),
                 GridBagConstraints.NONE);
-        changeSuffixCheck.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                suffixList.setEnabled(changeSuffixCheck.isSelected());
+        changeSuffixCheck.addActionListener(e -> suffixList.setEnabled(changeSuffixCheck.isSelected()));
+
+        previewButton.addActionListener(e -> {
+            if (useTemplateCheckBox.isSelected()) {
+                String template = templateList.getSelectedItem().toString();
+                String startIndexStr = startPosSpn.getModel().getValue().toString();
+                int startIndex = Integer.parseInt(startIndexStr);
+                List<FileNameObj> fileNames = ((FileChooseTableModel) reviewTable.getModel()).getFileNameSet();
+                if (useNumberRadioButton.isSelected()) {
+                    try {
+                        FileRenameUtil.renameFilesUsingNum(fileNames, template, startIndex, false);
+                    } catch (TemplateException | FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(mainFrame, ex.getMessage());
+                    }
+                }
+                ((AbstractTableModel) reviewTable.getModel()).fireTableDataChanged();
             }
         });
 
-        previewButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (useTemplateCheckBox.isSelected()) {
-                    String template = templateList.getSelectedItem().toString();
-                    String startIndexStr = startPosSpn.getModel().getValue().toString();
-                    int startIndex = Integer.parseInt(startIndexStr);
-                    List<FileNameObj> fileNames = ((FileChooseTableModel) reviewTable.getModel()).getFileNameSet();
-                    if (useNumberRadioButton.isSelected()) {
-                        try {
-                            FileRenameUtil.renameFilesUsingNum(fileNames, template, startIndex, false);
-                        } catch (TemplateException ex) {
-                            JOptionPane.showMessageDialog(mainFrame, ex.getMessage());
-                        } catch (FileNotFoundException ex) {
-                            JOptionPane.showMessageDialog(mainFrame, ex.getMessage());
-                        }
+        beginButton.addActionListener(e -> {
+            if (useTemplateCheckBox.isSelected()) {
+                String template = templateList.getSelectedItem().toString();
+                String startIndexStr = startPosSpn.getModel().getValue().toString();
+                int startIndex = Integer.parseInt(startIndexStr);
+                List<FileNameObj> fileNames = ((FileChooseTableModel) reviewTable.getModel()).getFileNameSet();
+                if (useNumberRadioButton.isSelected()) {
+                    try {
+                        FileRenameUtil.renameFilesUsingNum(fileNames, template, startIndex, true);
+                        JOptionPane.showMessageDialog(mainFrame, localeHelper.getLocaleString(
+                                UIConstants.MESSAGE_FILERENAMED));
+                    } catch (TemplateException | FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(mainFrame, ex.getMessage());
                     }
-                    ((AbstractTableModel) reviewTable.getModel()).fireTableDataChanged();
                 }
-            }
-        });
-
-        beginButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (useTemplateCheckBox.isSelected()) {
-                    String template = templateList.getSelectedItem().toString();
-                    String startIndexStr = startPosSpn.getModel().getValue().toString();
-                    int startIndex = Integer.parseInt(startIndexStr);
-                    List<FileNameObj> fileNames = ((FileChooseTableModel) reviewTable.getModel()).getFileNameSet();
-                    if (useNumberRadioButton.isSelected()) {
-                        try {
-                            FileRenameUtil.renameFilesUsingNum(fileNames, template, startIndex, true);
-                            JOptionPane.showMessageDialog(mainFrame, localeHelper.getLocaleString(
-                                    UIConstants.MESSAGE_FILERENAMED));
-                        } catch (TemplateException ex) {
-                            JOptionPane.showMessageDialog(mainFrame, ex.getMessage());
-                        } catch (FileNotFoundException ex) {
-                            JOptionPane.showMessageDialog(mainFrame, ex.getMessage());
-                        }
-                    }
-                    ((AbstractTableModel) reviewTable.getModel()).fireTableDataChanged();
-                }
+                ((AbstractTableModel) reviewTable.getModel()).fireTableDataChanged();
             }
         });
 
@@ -309,11 +292,7 @@ public class RenameView {
         fileOpen.addActionListener(new FileAddListener());
         fileMenu.add(fileOpen);
 
-        fileClose.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        fileClose.addActionListener(e -> System.exit(0));
         fileMenu.add(fileClose);
 
         // used for language selection, for future add-on
@@ -420,9 +399,8 @@ public class RenameView {
                 for (File file : files) {
                     FileNameObj fNameObj = new FileNameObj(file.getAbsolutePath());
                     boolean isAdded = false;
-                    Iterator iter = fileNames.iterator();
-                    while (iter.hasNext()) {
-                        if (fNameObj.equals(iter.next())) {
+                    for (FileNameObj fileName : fileNames) {
+                        if (fNameObj.equals(fileName)) {
                             isAdded = true;
                             break;
                         }
@@ -442,10 +420,10 @@ public class RenameView {
             FileChooseTableModel model = (FileChooseTableModel) reviewTable.getModel();
             List<FileNameObj> fileNames = model.getFileNameSet();
             int[] columnsInds = reviewTable.getSelectedRows();
-            List<FileNameObj> selectedFileNames = new ArrayList<FileNameObj>();
-            for (int i = 0; i < columnsInds.length; i++) {
-                if (columnsInds[i] < fileNames.size()) {
-                    selectedFileNames.add(fileNames.get(columnsInds[i]));
+            List<FileNameObj> selectedFileNames = new ArrayList<>();
+            for (int columnsInd : columnsInds) {
+                if (columnsInd < fileNames.size()) {
+                    selectedFileNames.add(fileNames.get(columnsInd));
                 }
             }
             fileNames.removeAll(selectedFileNames);
@@ -458,14 +436,13 @@ public class RenameView {
         private List<FileNameObj> fileNames;
         private boolean isNewFileInPath;
         private final int INIT_ROW_CNT = (int) Math.floor(TABLE_SCROLL_VIEW_PREFER_HEIGHT / reviewTable.getRowHeight());
-        ;
         private final String[] colHeaderNames = {
             localeHelper.getLocaleString(UIConstants.TABLE_HEAD_COL_FIR),
             localeHelper.getLocaleString(UIConstants.TABLE_HEAD_COL_SEC),
             localeHelper.getLocaleString(UIConstants.TABLE_HEAD_COL_THI)};
 
         FileChooseTableModel() {
-            this(new ArrayList<FileNameObj>());
+            this(new ArrayList<>());
         }
 
         FileChooseTableModel(List<FileNameObj> fileNames) {
@@ -507,7 +484,7 @@ public class RenameView {
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             if (rowIndex < fileNames.size()) {
-                FileNameObj fileName = (FileNameObj) fileNames.get(rowIndex);
+                FileNameObj fileName = fileNames.get(rowIndex);
                 switch (columnIndex) {
                     case 0:
                         return fileName.getOldFileName() + "." + fileName.getOldPostFix();
@@ -527,20 +504,14 @@ public class RenameView {
     /**
      * Launch the application
      *
-     * @param args
+     * @param args -
      */
-    public static void main(String args[]) {
+    public static void main(String [] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            RenameView view = new RenameView();
-        } catch (ClassNotFoundException classNotFoundException) {
+            new RenameView();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException classNotFoundException) {
             classNotFoundException.printStackTrace();
-        } catch (InstantiationException instantiationException) {
-            instantiationException.printStackTrace();
-        } catch (IllegalAccessException illegalAccessException) {
-            illegalAccessException.printStackTrace();
-        } catch (UnsupportedLookAndFeelException unsupportedLookAndFeelException) {
-            unsupportedLookAndFeelException.printStackTrace();
         }
     }
 }

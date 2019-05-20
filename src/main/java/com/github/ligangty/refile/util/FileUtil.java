@@ -20,7 +20,7 @@ public class FileUtil {
         if (lastIndexOfDot < 0) {
             return "";
         } else {
-            return fileName.substring(lastIndexOfDot + 1, fileName.length());
+            return fileName.substring(lastIndexOfDot + 1);
         }
     }
 

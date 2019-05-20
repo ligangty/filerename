@@ -41,10 +41,6 @@ public class LocaleHelper {
         return new LocaleHelper(resourceBundleBaseName);
     }
 
-    /**
-     * @param resourceKey
-     * @return
-     */
     private Object getObject(String resourceKey) {
         return this.resourceBundleForCurrentUserLocale.getObject(resourceKey);
     }
@@ -52,8 +48,8 @@ public class LocaleHelper {
     /**
      * Gets Content String
      *
-     * @param contentKey
-     * @return
+     * @param contentKey -
+     * @return -
      */
     public final String getLocaleString(String contentKey) {
         return (String) getObject(contentKey);
@@ -63,8 +59,8 @@ public class LocaleHelper {
      * This method returns a localized content string for the given key with
      * given string parameters substituted into the content string
      *
-     * @param contentKey
-     * @param contentStringParameters
+     * @param contentKey -
+     * @param contentStringParameters -
      * @return a string representing the localized content associated with the
      * given content key
      */
@@ -77,7 +73,7 @@ public class LocaleHelper {
     /**
      * Gets Current User Locale
      *
-     * @return
+     * @return -
      */
     public final Locale getCurrentUserLocale() {
         return currentUserLocale;
@@ -86,7 +82,7 @@ public class LocaleHelper {
     /**
      * Format's a Date object in IBM format using the user's locale
      *
-     * @param aDate
+     * @param aDate -
      * @return a String with the date in IBM format for the user's locale
      */
     public String formatDate(java.util.Date aDate) {

@@ -9,7 +9,7 @@ public class TemplateException extends Exception {
         this.sourceTemplate = sourceTemplate;
     }
 
-    public TemplateException(String errorMessage, Template sourceTemplate) {
+    TemplateException(String errorMessage, Template sourceTemplate) {
         super(errorMessage);
         this.sourceTemplate = sourceTemplate;
         this.sourceTemplate.setErrorMessage(errorMessage);

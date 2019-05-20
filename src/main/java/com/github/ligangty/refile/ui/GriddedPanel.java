@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class GriddedPanel extends JPanel {
 
-    private GridBagConstraints constraints;
+    private final GridBagConstraints constraints;
     // Default constraints value definitions
     private static final int C_HORZ = GridBagConstraints.HORIZONTAL;
     private static final int C_NONE = GridBagConstraints.NONE;

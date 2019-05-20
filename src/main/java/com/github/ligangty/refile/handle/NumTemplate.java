@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  */
 public class NumTemplate extends AbstractTemplate {
 
-    private static final Logger log = Logger.getLogger(NumTemplate.class.getName());
     /**
      * number which will replace the "?" in the template, may be added with
      * zeroes
@@ -28,7 +27,7 @@ public class NumTemplate extends AbstractTemplate {
      * the limitation of the number digit charaters, which means the characters
      * of the number must not be more than this limitation, now are 16
      */
-    protected static final int MAX_NUM_LIMIT_CHARS = 16;
+    private static final int MAX_NUM_LIMIT_CHARS = 16;
     /**
      * regexp pattern for this match
      */
@@ -44,7 +43,7 @@ public class NumTemplate extends AbstractTemplate {
      * @param changeTo - used to replace the file name which match the "?" in
      * template string
      * @return changed file name
-     * @throws TemplateException
+     * @throws TemplateException -
      */
     public String getFileNameFromTemplate(String templateStr, int changeTo) throws TemplateException {
         setChangeTo(changeTo);
@@ -72,9 +71,9 @@ public class NumTemplate extends AbstractTemplate {
      * @param numLimit - limit the numbers of continuous number characters. e.g:
      * when "????", this is 4;
      * @return number characters which will replace the match part
-     * @throws TemplateException
+     * @throws TemplateException -
      */
-    protected String addZerosByNumLimit(int numLimit) throws TemplateException {
+    String addZerosByNumLimit(int numLimit) throws TemplateException {
         if (numLimit > MAX_NUM_LIMIT_CHARS) {
             throw new TemplateException("the num of ? in number temlate was more than the limit", this);
         }
@@ -89,7 +88,7 @@ public class NumTemplate extends AbstractTemplate {
         return sb.toString();
     }
 
-    protected void setChangeTo(int changeTo) {
+    void setChangeTo(int changeTo) {
         this.changeTo = changeTo;
     }
 }

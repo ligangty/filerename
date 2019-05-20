@@ -1,23 +1,15 @@
 package com.github.ligangty.refile.handle;
 
-import com.github.ligangty.refile.handle.NumTemplate;
-import com.github.ligangty.refile.handle.TemplateException;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class NumTemplateTest extends TestCase {
+public class NumTemplateTest {
 
-    private NumTemplate template = new NumTemplate();
+    private final NumTemplate template = new NumTemplate();
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testGetFileNameFromTemplate() throws Exception {
+    @Test
+    public void testGetFileNameFromTemplate() {
         String templateStr = "Test????Temp?New?File";
         long startTime = System.currentTimeMillis();
         int loopTimes = 100000;

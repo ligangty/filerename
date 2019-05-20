@@ -1,19 +1,12 @@
 package com.github.ligangty.refile.util;
 
-import com.github.ligangty.refile.util.FileUtil;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-import junit.framework.TestCase;
+public class FileUtilTest {
 
-public class FileUtilTest extends TestCase {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testGetPostFixFromFileName() {
         String fileName = "MyFile.txt";
         assertEquals("txt", FileUtil.getPostFixFromFileName(fileName));

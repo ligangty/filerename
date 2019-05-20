@@ -37,12 +37,6 @@ public class FileNameObj implements Comparable {
      */
     private String newPostFix;
 
-    public FileNameObj() {
-    }
-
-    public FileNameObj(String filePath, String oldFileName) {
-        this(filePath + "/" + oldFileName);
-    }
 
     public FileNameObj(String fullFileName) {
         getFilePathFromFullFileName(fullFileName);

@@ -1,21 +1,13 @@
 package com.github.ligangty.refile.handle;
 
-import com.github.ligangty.refile.handle.RangeTemplate;
-import com.github.ligangty.refile.handle.TemplateException;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-public class RangeTemplateTest extends TestCase {
-	private RangeTemplate template = new RangeTemplate();
+public class RangeTemplateTest {
+	private final RangeTemplate template = new RangeTemplate();
 	
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
+	@Test
 	public void testGetFileNameFromTemplate() {
 		String fileName = "MyFile.txt";
 		String templateStr = "Test<1-2>Temp<1-2>New<3>i<5-6>";
@@ -27,6 +19,19 @@ public class RangeTemplateTest extends TestCase {
 		}
 	}
 
+	@Test
+	public void testGetFileNameTemplate2(){
+		String fileName = "[Maho.sub][140228][这是一个测试啊这是一个测试啊这是一个测试啊这是一个测试啊]这是一个测试啊这是一个测试啊.txt";
+		String templateStr = "Test<11-12>Temp<1-2>New<3>i<5-6>";
+		try {
+			assertEquals("Test[1Temp[MNewaio..txt", template.getFileNameFromTemplate(
+				fileName, templateStr)+".txt");
+		} catch (TemplateException e) {
+			fail();
+		}
+	}
+
+	@Test
 	public void testGetRealTxtWithTemplateFromFileName() {
 		String fileName = "MyFile";
 		try {
@@ -36,5 +41,7 @@ public class RangeTemplateTest extends TestCase {
 			fail();
 		}
 	}
+
+
 
 }

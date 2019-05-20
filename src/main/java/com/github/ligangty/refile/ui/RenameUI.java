@@ -24,7 +24,7 @@ import com.github.ligangty.refile.util.UIConstants;
 
 public class RenameUI {
 
-    LocaleHelper localHelper = LocaleHelper.getInstance();
+    private LocaleHelper localHelper = LocaleHelper.getInstance();
     private final JFrame mainBoard = new JFrame();
     private final JMenuBar menuBar = new JMenuBar();
     private final JMenu fileMenu = new JMenu();
@@ -41,9 +41,9 @@ public class RenameUI {
     /**
      * Launch the application
      *
-     * @param args
+     * @param args -
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             RenameUI window = new RenameUI();
             window.mainBoard.setVisible(true);
@@ -55,7 +55,7 @@ public class RenameUI {
     /**
      * Create the application
      */
-    public RenameUI() {
+    private RenameUI() {
         initialize();
     }
 
@@ -77,53 +77,43 @@ public class RenameUI {
 
         menuBar.add(fileMenu);
 
-        fileOpen.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileDialog = new JFileChooser();
-                fileDialog.setMultiSelectionEnabled(true);
-                // fileDialog.setVisible(true);
-                int result = fileDialog.showOpenDialog(mainBoard);
-                String msg;
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File[] files = fileDialog.getSelectedFiles();
-                    for (File file : files) {
-                        System.out.println(file.getName());
-                        System.out.println(file.getAbsolutePath());
-                    }
-                    String fname = fileDialog.getName(fileDialog
-                            .getSelectedFile());
-                    mainBoard.setTitle(fname);
-                    msg = "File Open Approved";
-                } else {
-                    msg = "File Open Cancelled";
+        fileOpen.addActionListener(e -> {
+            JFileChooser fileDialog = new JFileChooser();
+            fileDialog.setMultiSelectionEnabled(true);
+            // fileDialog.setVisible(true);
+            int result = fileDialog.showOpenDialog(mainBoard);
+            String msg;
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File[] files = fileDialog.getSelectedFiles();
+                for (File file : files) {
+                    System.out.println(file.getName());
+                    System.out.println(file.getAbsolutePath());
                 }
-                JOptionPane.showMessageDialog(mainBoard, msg);
+                String fname = fileDialog.getName(fileDialog
+                        .getSelectedFile());
+                mainBoard.setTitle(fname);
+                msg = "File Open Approved";
+            } else {
+                msg = "File Open Cancelled";
             }
+            JOptionPane.showMessageDialog(mainBoard, msg);
         });
         fileMenu.add(fileOpen);
 
-        fileClose.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        fileClose.addActionListener(e -> System.exit(0));
         fileMenu.add(fileClose);
 
         menuBar.add(languageMenu);
 
-        eng.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                RenameUI.this.changeLocale(new Locale("en", "us"));
-                setTextByLocale();
-            }
+        eng.addActionListener(e -> {
+            RenameUI.this.changeLocale(new Locale("en", "us"));
+            setTextByLocale();
         });
         languageMenu.add(eng);
 
-        chn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                RenameUI.this.changeLocale(new Locale("zh", "cn"));
-                setTextByLocale();
-            }
+        chn.addActionListener(e -> {
+            RenameUI.this.changeLocale(new Locale("zh", "cn"));
+            setTextByLocale();
         });
         languageMenu.add(chn);
 
@@ -136,7 +126,7 @@ public class RenameUI {
         mainBoard.getContentPane().add(downPane, BorderLayout.CENTER);
     }
 
-    protected void setTextByLocale() {
+    private void setTextByLocale() {
         mainBoard.setTitle(localHelper
                 .getLocaleString(UIConstants.MAIN_WINDOW_TITLE));
         fileMenu.setText(localHelper.getLocaleString(UIConstants.MENU_FILE));
@@ -150,7 +140,7 @@ public class RenameUI {
                 .getLocaleString(UIConstants.BORDER_OPTIONS_TITLE));
     }
 
-    public void changeLocale(Locale locale) {
+    private void changeLocale(Locale locale) {
         this.localHelper = LocaleHelper.getInstance(locale);
     }
 }

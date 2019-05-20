@@ -3,19 +3,18 @@ package com.github.ligangty.refile.handle;
 import com.github.ligangty.refile.handle.OriginalFileNameTemplate;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
-/**
- *
- * @author ligangty
- */
-public class OriginalFileNameTemplateTest extends TestCase {
+public class OriginalFileNameTemplateTest {
 
-    private OriginalFileNameTemplate template = new OriginalFileNameTemplate();
+    private final OriginalFileNameTemplate template = new OriginalFileNameTemplate();
 
+    @Test
     public void testGetFileNameFromTemplate() throws Exception {
         String fileName = "fileNameForTest.txt";
         String templateStr = "*<1-5>*??";
         String result = template.getFileNameFromTemplate(fileName, templateStr);
-        assertEquals("fileNameForTest<1-5>fileNameForTest??", result);
+        Assert.assertEquals("fileNameForTest<1-5>fileNameForTest??", result);
     }
 }

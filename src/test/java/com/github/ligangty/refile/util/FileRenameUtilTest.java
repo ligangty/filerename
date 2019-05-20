@@ -2,15 +2,15 @@ package com.github.ligangty.refile.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Enumeration;
-import java.util.Properties;
 
 import com.github.ligangty.refile.handle.TemplateException;
-import com.github.ligangty.refile.util.FileRenameUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-public class FileRenameUtilTest extends TestCase {
+public class FileRenameUtilTest {
 
     private static final String filePath = System.getProperty("java.io.tmpdir") + "/renamefiletest";
     private static final String template = "<1-4>???";
@@ -23,11 +23,12 @@ public class FileRenameUtilTest extends TestCase {
         return fPath;
     }
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         clearFilePath().mkdir();
     }
 
+    @Test
     public void testChangeNameInOnePathFromTemplate() {
         try {
             FileRenameUtil.changeNameInOnePathFromTemplate(filePath, template);
@@ -49,8 +50,8 @@ public class FileRenameUtilTest extends TestCase {
         }
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         clearFilePath();
     }
 }

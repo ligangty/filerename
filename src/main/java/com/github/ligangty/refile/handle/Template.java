@@ -9,7 +9,7 @@ package com.github.ligangty.refile.handle;
  */
 public interface Template {
 
-    public String getErrorMessage();
+    String getErrorMessage();
 
-    public void setErrorMessage(String errorMessage);
+    void setErrorMessage(String errorMessage);
 }

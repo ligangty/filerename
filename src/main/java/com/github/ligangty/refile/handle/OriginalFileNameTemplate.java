@@ -22,14 +22,6 @@ public class OriginalFileNameTemplate extends AbstractTemplate {
      */
     private static final String PATTERN = "(\\*)";
 
-    /**
-     *
-     *
-     * @param fileName
-     * @param templateStr
-     * @return
-     * @throws com.github.ligangty.refile.handle.TemplateException
-     */
     public String getFileNameFromTemplate(String fileName, String templateStr)
             throws TemplateException {
         String fileNameWithoutPostFix = FileUtil
