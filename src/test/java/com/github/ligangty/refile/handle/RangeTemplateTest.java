@@ -20,13 +20,13 @@ public class RangeTemplateTest {
 
 	@Test
 	public void testGetFileNameTemplate2() throws TemplateException{
-		String fileName = "[Maho.sub][140228][这是一个测试啊这是一个测试啊这是一个测试啊这是一个测试啊]这是一个测试啊这是一个测试啊.txt";
+		String fileName = "[ABC.XYZ][123456][这是一个测试啊]这是一个测试啊.txt";
 		String templateStr = "Test<11-12>Temp<1-2>New<3>i<5-6>";
-		assertEquals("Test[1Temp[MNewaio..txt", template.getFileNameFromTemplate(fileName, templateStr) + ".txt");
+		assertEquals("Test12Temp[ANewBi.X.txt", template.getFileNameFromTemplate(fileName, templateStr) + ".txt");
 		templateStr = "Test<11->";
-		assertEquals("Test[140228][这是一个测试啊这是一个测试啊这是一个测试啊这是一个测试啊]这是一个测试啊这是一个测试啊.txt", template.getFileNameFromTemplate(fileName, templateStr) + ".txt");
+		assertEquals("Test123456][这是一个测试啊]这是一个测试啊.txt", template.getFileNameFromTemplate(fileName, templateStr) + ".txt");
 		templateStr = "Test<-11>";
-		assertEquals("Test[Maho.sub][.txt", template.getFileNameFromTemplate(fileName, templateStr) + ".txt");
+		assertEquals("Test[ABC.XYZ][1.txt", template.getFileNameFromTemplate(fileName, templateStr) + ".txt");
 	}
 
 	@Test
