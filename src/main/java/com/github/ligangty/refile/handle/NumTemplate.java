@@ -1,6 +1,5 @@
 package com.github.ligangty.refile.handle;
 
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

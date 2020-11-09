@@ -1,6 +1,5 @@
 package com.github.ligangty.refile.handle;
 
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,24 +14,20 @@ import com.github.ligangty.refile.util.FileUtil;
  */
 public class OriginalFileNameTemplate extends AbstractTemplate {
 
-    private static final Logger log = Logger.getLogger(OriginalFileNameTemplate.class
-            .getName());
-    /**
-     * regexp pattern for this match
-     */
-    private static final String PATTERN = "(\\*)";
+	/**
+	 * regexp pattern for this match
+	 */
+	private static final String PATTERN = "(\\*)";
 
-    public String getFileNameFromTemplate(String fileName, String templateStr)
-            throws TemplateException {
-        String fileNameWithoutPostFix = FileUtil
-                .getFileNameWithoutPostFix(fileName);
-        Pattern p = Pattern.compile(PATTERN);
-        Matcher m = p.matcher(templateStr);
-        StringBuffer sb = new StringBuffer(256);
-        while (m.find()) {
-            m.appendReplacement(sb, fileNameWithoutPostFix);
-        }
-        m.appendTail(sb);
-        return sb.toString();
-    }
+	public String getFileNameFromTemplate(String fileName, String templateStr) {
+		String fileNameWithoutPostFix = FileUtil.getFileNameWithoutPostFix(fileName);
+		Pattern p = Pattern.compile(PATTERN);
+		Matcher m = p.matcher(templateStr);
+		StringBuffer sb = new StringBuffer(256);
+		while (m.find()) {
+			m.appendReplacement(sb, fileNameWithoutPostFix);
+		}
+		m.appendTail(sb);
+		return sb.toString();
+	}
 }

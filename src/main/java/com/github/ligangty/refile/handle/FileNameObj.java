@@ -10,10 +10,11 @@ import com.github.ligangty.refile.util.FileUtil;
  * original file name, and the file name this file intend to be renamed to.
  * Because this class's objects may be used in the Vector which will be used
  * sortedly, so it implements the java.lang.Comparable.
+ *
  * @author ligangty@github.com
  * @date Apr 6, 2009
  */
-public class FileNameObj implements Comparable {
+public class FileNameObj implements Comparable<FileNameObj> {
 
 	/**
 	 * The file path not including the file name.
@@ -88,30 +89,25 @@ public class FileNameObj implements Comparable {
 		return this.oldFileName + "." + this.oldPostFix;
 	}
 
-	public String getFullNewFileName() {
-		return this.newFileName + "." + this.newPostFix;
-	}
-
-	public final String getFilePathFromFullFileName(String fullFileName) {
+	public final void getFilePathFromFullFileName(String fullFileName) {
 		if (fullFileName.contains("\\")) {
 			fullFileName = fullFileName.replaceAll("\\\\", "/");
 		}
 		setFilePath(fullFileName.substring(0, fullFileName.lastIndexOf("/")));
-		return filePath;
 	}
 
-	public final String getOldFileNameFromFullFileName(String fullFileName) {
+	public final void getOldFileNameFromFullFileName(String fullFileName) {
 		if (fullFileName.contains("\\")) {
 			fullFileName = fullFileName.replaceAll("\\\\", "/");
 		}
 		setOldFileName(FileUtil.getFileNameWithoutPostFix(fullFileName.substring(fullFileName.lastIndexOf("/") + 1)));
-		return oldFileName;
 	}
 
 	/**
 	 * rename the file from oldFileName to newFileName in the filePath
+	 *
 	 * @throws java.io.FileNotFoundException if the filePath + oldFileName can
-	 * not be found
+	 *                                       not be found
 	 */
 	public void renameFile() throws FileNotFoundException {
 		File file = new File(filePath + "/" + oldFileName + "." + getOldPostFix());
@@ -128,24 +124,25 @@ public class FileNameObj implements Comparable {
 	 * compare the two fileNameObjs. When oldFileName and filePath are both
 	 * equal, the two fileNameObjs are equal; else compared by the filePath
 	 * string or by the oldFileName string(if the filePath also equals)
+	 *
 	 * @param fileNameObj
 	 * @return
 	 */
 	@Override
-	public int compareTo(Object fileNameObj) {
-		FileNameObj fNameObj = (FileNameObj) fileNameObj;
-		if (this.getOldFileName().equals(fNameObj.getOldFileName()) && this.getFilePath().equals(fNameObj.getFilePath())) {
+	public int compareTo(FileNameObj fileNameObj) {
+		if (this.getOldFileName().equals(fileNameObj.getOldFileName()) && this.getFilePath().equals(fileNameObj.getFilePath())) {
 			return 0;
-		} else if (!this.getFilePath().equals(fNameObj.getFilePath())) {
-			return this.getFilePath().compareTo(fNameObj.getFilePath());
+		} else if (!this.getFilePath().equals(fileNameObj.getFilePath())) {
+			return this.getFilePath().compareTo(fileNameObj.getFilePath());
 		} else {
-			return this.getOldFileName().compareTo(fNameObj.getOldFileName());
+			return this.getOldFileName().compareTo(fileNameObj.getOldFileName());
 		}
 	}
 
 	/**
 	 * When oldFileName and filePath are both equal, the two fileNameObjs are
 	 * equal
+	 *
 	 * @param fileNameObj
 	 * @return
 	 */

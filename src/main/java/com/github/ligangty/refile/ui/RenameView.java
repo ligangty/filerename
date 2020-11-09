@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,6 +35,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.table.AbstractTableModel;
@@ -50,11 +51,11 @@ import com.github.ligangty.refile.util.UIConstants;
  * main GUI class for this project
  *
  * P.S.: 1.change postfix function not implemented. 2.change template for start
- * by alphabeta replacing the ? not implemented. 3.Upper Lower transformation
+ * by Alphabet replacing the ? not implemented. 3.Upper Lower transformation
  * was not implemented
  *
  * @author ligangty@github.com
- * @date Apri 14, 2009
+ * @date Apr. 14, 2009
  */
 public class RenameView {
 
@@ -68,23 +69,23 @@ public class RenameView {
     // selected to determine if to use the template all
     private final JCheckBox useTemplateCheckBox = new JCheckBox();
     // the input box for template string of changing the main file name
-    private final JComboBox templateList = new JComboBox();
+    private final JComboBox<String> templateList = new JComboBox<>();
     // the input box for template string of changing the postfix file name
     // not build the handler for this box
-    private final JComboBox suffixList = new JComboBox();
+    private final JComboBox<String> suffixList = new JComboBox<>();
     // Upper Lower transformation options list
-    private final JComboBox ulChangeList = new JComboBox();
+    private final JComboBox<String> ulChangeList = new JComboBox<>();
     // readme show in this text area
     private final JTextArea textArea = new JTextArea();
     // for containing the useNumberRadioButton and useAlphaBetaRadioButton
     private final ButtonGroup buttonGroup = new ButtonGroup();
     // selected for change the ? to number
     private final JRadioButton useNumberRadioButton = new JRadioButton();
-    // selected for change the ? to alphabeta
+    // selected for change the ? to alphabet
     private final JRadioButton useAlphaBetaRadioButton = new JRadioButton();
     // showing label for start position startPosSpn
     private final JLabel startPositionLabel = new JLabel();
-    // for change the ? which start from, number or alphabeta
+    // for change the ? which start from, number or alphabet
     private final JSpinner startPosSpn = new JSpinner();
     private final JButton previewButton = new JButton();
     private final JButton beginButton = new JButton();
@@ -115,7 +116,7 @@ public class RenameView {
         mainFrame.setResizable(false);
         mainFrame.setBounds(400, 250, MAIN_FRAME_PREFERRED_WIDTH,
                 MAIN_FRAME_PREFERRED_HEIGHT);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // previewButton.setBorderPainted(false);
         // beginButton.setBorderPainted(false);
@@ -145,9 +146,8 @@ public class RenameView {
 
         useTemplateCheckBox.setSelected(true);
         useTemplateCheckBox.addActionListener(e -> {
-            for (Enumeration enm = buttonGroup.getElements(); enm.hasMoreElements();) {
-                JComponent subComp = (JComponent) enm.nextElement();
-                subComp.setEnabled(useTemplateCheckBox.isSelected());
+            for (Enumeration<AbstractButton> enm = buttonGroup.getElements(); enm.hasMoreElements();) {
+                enm.nextElement().setEnabled(useTemplateCheckBox.isSelected());
             }
             startPosSpn.setEnabled(useTemplateCheckBox.isSelected());
             templateList.setEnabled(useTemplateCheckBox.isSelected());
@@ -189,9 +189,9 @@ public class RenameView {
         optionsPanel.addComponent(changeSuffixCheck, 5, 5, 1, 1,
                 GridBagConstraints.CENTER, 0, 0, 0, 0, null,
                 GridBagConstraints.NONE);
-        String[] sampleSuffixs = {"", ".exe", ".txt", ".pdf", ".doc", ".jpg",
+        String[] sampleSuffix = {"", ".exe", ".txt", ".pdf", ".doc", ".jpg",
             ".gif", ".png"};
-        suffixList.setModel(new DefaultComboBoxModel(sampleSuffixs));
+        suffixList.setModel(new DefaultComboBoxModel<>(sampleSuffix));
         suffixList.setEditor(new FixedWidthComboBoxEditor());
         suffixList.setEditable(true);
         suffixList.setEnabled(false); // when initializing, make the suffix name cannot be changed
@@ -266,7 +266,7 @@ public class RenameView {
                 GridBagConstraints.NONE);
 
         String[] sampleUpperLowerTemps = {""};
-        ulChangeList.setModel(new DefaultComboBoxModel(sampleUpperLowerTemps));
+        ulChangeList.setModel(new DefaultComboBoxModel<>(sampleUpperLowerTemps));
         fileChoosePanel.addComponent(ulChangeList, 0, 4, 1, 1,
                 GridBagConstraints.WEST, 1, 0, 0, -5, new Insets(3, 0, 3, 0),
                 GridBagConstraints.NONE);
@@ -367,14 +367,14 @@ public class RenameView {
         for (int i = 0; i < templatesCount; i++) {
             templates[i] = localeHelper.getLocaleString(UIConstants.TEMPLATE_BASE + i);
         }
-        templateList.setModel(new DefaultComboBoxModel(templates));
+        templateList.setModel(new DefaultComboBoxModel<>(templates));
     }
 
     public void changeLocale(Locale locale) {
         this.localeHelper = LocaleHelper.getInstance(locale);
     }
 
-    class FixedWidthComboBoxEditor extends BasicComboBoxEditor {
+    private static class FixedWidthComboBoxEditor extends BasicComboBoxEditor {
 
         public FixedWidthComboBoxEditor() {
             this(2);
@@ -433,8 +433,7 @@ public class RenameView {
 
     class FileChooseTableModel extends AbstractTableModel {
 
-        private List<FileNameObj> fileNames;
-        private boolean isNewFileInPath;
+        private final List<FileNameObj> fileNames;
         private final int INIT_ROW_CNT = (int) Math.floor(TABLE_SCROLL_VIEW_PREFER_HEIGHT / reviewTable.getRowHeight());
         private final String[] colHeaderNames = {
             localeHelper.getLocaleString(UIConstants.TABLE_HEAD_COL_FIR),
@@ -449,21 +448,11 @@ public class RenameView {
             this.fileNames = fileNames;
         }
 
-        public void setFileNameSet(List<FileNameObj> fileNames) {
-            this.fileNames = fileNames;
-        }
 
         public List<FileNameObj> getFileNameSet() {
             return fileNames;
         }
 
-        public boolean isNewFileInPath() {
-            return isNewFileInPath;
-        }
-
-        public void setNewFileInPath(boolean isNewFileInPath) {
-            this.isNewFileInPath = isNewFileInPath;
-        }
 
         @Override
         public int getColumnCount() {
@@ -473,7 +462,7 @@ public class RenameView {
         @Override
         public int getRowCount() {
             int realCount = fileNames.size();
-            return realCount > INIT_ROW_CNT ? realCount : INIT_ROW_CNT;
+            return Math.max(realCount, INIT_ROW_CNT);
         }
 
         @Override

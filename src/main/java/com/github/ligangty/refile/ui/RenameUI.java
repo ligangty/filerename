@@ -3,8 +3,6 @@ package com.github.ligangty.refile.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Locale;
 
@@ -17,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import com.github.ligangty.refile.util.LocaleHelper;
@@ -71,7 +70,7 @@ public class RenameUI {
 
         mainBoard.setForeground(new Color(255, 128, 128));
         mainBoard.setBounds(100, 100, 436, 491);
-        mainBoard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainBoard.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         mainBoard.setJMenuBar(menuBar);
 
